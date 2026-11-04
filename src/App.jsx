@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { site, nav, hero, about, services, approach, leader, contact, footer } from './content.js'
+import { site, nav, hero, about, services, approach, team, contact, footer } from './content.js'
 
 const LEAF =
   'M0 -2 C-4 -10 -20 -14 -20 -26 C-20 -33 -13 -37 -7 -34 C-3 -32 0 -28 0 -25 C0 -28 3 -32 7 -34 C13 -37 20 -33 20 -26 C20 -14 4 -10 0 -2 Z'
@@ -239,26 +239,29 @@ function Approach() {
   )
 }
 
-function Leadership() {
+function Team() {
   return (
-    <section id="leadership" className="tint">
-      <div className="wrap">
-        <div className="head" data-reveal>
-          <p className="eyebrow">Leadership</p>
-          <h2>{leader.title}</h2>
+    <section id="team" className="tint">
+      <div className="wrap team-grid">
+        <div className="stack" data-reveal>
+          <p className="eyebrow">Our team</p>
+          <h2>{team.title}</h2>
+          {team.paragraphs.map((p) => (
+            <p key={p} className="muted">{p}</p>
+          ))}
         </div>
-        <div className="leader" data-reveal>
-          {leader.photo ? (
-            <img className="avatar" src={leader.photo} alt={leader.name} />
-          ) : (
-            <div className="avatar" aria-hidden="true">{leader.initials}</div>
-          )}
-          <div className="stack-sm">
-            <h3>{leader.name}</h3>
-            <p className="role">{leader.role}</p>
-            <p className="muted">{leader.bio}</p>
-          </div>
-        </div>
+        <aside className="helps" data-reveal style={{ '--i': 2 }}>
+          <Clover size={64} color="#C9A6DD" className="helps-mark" />
+          <h3>{team.helpsTitle}</h3>
+          <ul>
+            {team.helps.map((h, i) => (
+              <li key={h} style={{ '--i': i }}>
+                <Clover size={16} color="#9BE0B4" />
+                <span>{h}</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
       </div>
     </section>
   )
@@ -309,7 +312,7 @@ export default function App() {
         <About />
         <Services />
         <Approach />
-        <Leadership />
+        <Team />
         <Contact />
       </main>
       <footer>

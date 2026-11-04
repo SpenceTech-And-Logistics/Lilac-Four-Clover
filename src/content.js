@@ -12,7 +12,7 @@ export const nav = [
   { href: '#about', label: 'About' },
   { href: '#services', label: 'Services' },
   { href: '#approach', label: 'Our approach' },
-  { href: '#leadership', label: 'Leadership' },
+  { href: '#team', label: 'Our team' },
   { href: '#contact', label: 'Contact' },
 ]
 
@@ -57,13 +57,18 @@ export const approach = {
     "We are dedicated to making business registration and compliance straightforward, accessible and efficient, so clients can establish credible businesses and operate confidently within Kenya's regulatory environment.",
 }
 
-export const leader = {
-  title: 'Led by a trained compliance expert',
-  name: 'Lilian Wanjiku',
-  role: 'Managing Director',
-  initials: 'LW',
-  photo: '', // e.g. '/lilian.jpg' placed in /public
-  bio: 'Lilian is a trained compliance expert who leads the firm with a commitment to professionalism, efficiency, confidentiality and regulatory integrity.',
+export const team = {
+  title: 'Trained compliance experts on your side',
+  paragraphs: [
+    'Our staff are trained compliance experts who provide practical guidance and dedicated support to help businesses meet their registration, regulatory and operational requirements.',
+    'With attention to detail and a commitment to professionalism, our team assists clients in understanding their obligations, preparing the necessary documentation and managing compliance processes efficiently, allowing them to focus on running and growing their businesses.',
+  ],
+  helpsTitle: 'How our team helps',
+  helps: [
+    'Understanding your obligations',
+    'Preparing the necessary documentation',
+    'Managing compliance processes efficiently',
+  ],
 }
 
 export const contact = {

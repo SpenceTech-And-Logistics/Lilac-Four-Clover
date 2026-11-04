@@ -145,15 +145,16 @@ section { padding-block: 88px; }
   .val + .val { border-left: 0; padding-left: 0; }
 }
 
-/* Leadership */
-.leader { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 36px; max-width: 880px; }
-.avatar { width: 100%; max-width: 220px; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: radial-gradient(circle at 30% 30%, #8A5BA3, #5B3171); color: #fff; display: grid; place-items: center; font-family: var(--font-display); font-size: 4rem; }
-.leader h3 { font-size: 1.9rem; }
-.role { color: var(--clover); font-weight: 600; }
-@media (max-width: 680px) {
-  .leader { grid-template-columns: 1fr; padding: 26px; gap: 24px; }
-  .avatar { max-width: 140px; font-size: 2.8rem; }
-}
+/* Our team */
+.team-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 56px; align-items: center; }
+.helps { position: relative; overflow: hidden; background: linear-gradient(160deg, #5B3171, #3E1F50); color: #fff; border-radius: 18px; padding: 34px; display: grid; gap: 18px; }
+.helps h3 { font-size: 1.45rem; position: relative; }
+.helps ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; position: relative; }
+.helps li { display: flex; gap: 12px; align-items: center; color: #E3D4EC; padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.12); }
+.helps li:last-child { border-bottom: 0; padding-bottom: 0; }
+.helps li svg { flex: none; }
+.helps-mark { position: absolute; right: -14px; top: -14px; width: 120px; height: 120px; opacity: .18; }
+@media (max-width: 860px) { .team-grid { grid-template-columns: 1fr; gap: 32px; } }
 
 /* Contact */
 .contact { background: var(--plum-deep); color: var(--on-plum); }
@@ -233,9 +234,12 @@ footer { background: var(--plum-deep); color: var(--on-plum-muted); border-top: 
 .reveal-ready .values.in .val { opacity: 1; transform: none; }
 .reveal-ready .values[data-reveal] { opacity: 1; transform: none; }
 
-/* Leadership: soft glowing ring around the portrait */
-.avatar { position: relative; box-shadow: 0 0 0 0 rgba(155, 224, 180, .5); animation: halo 3.6s ease-in-out infinite; }
-@keyframes halo { 0%, 100% { box-shadow: 0 0 0 0 rgba(201, 166, 221, .45); } 50% { box-shadow: 0 0 0 14px rgba(201, 166, 221, 0); } }
+/* Our team card: slow-turning clover, list items slide in */
+.helps-mark { animation: spin 50s linear infinite; }
+.helps li { transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); transition-delay: calc(300ms + var(--i, 0) * 120ms); }
+.reveal-ready .helps:not(.in) li { opacity: 0; transform: translateX(-14px); }
+.helps li svg { transition: transform .6s var(--ease-out); }
+.helps li:hover svg { transform: rotate(45deg); }
 
 /* Contact cards */
 .c-item { transition: border-color .3s ease, background .3s ease, transform .35s var(--ease-out), opacity .8s var(--ease-out); }
@@ -243,7 +247,7 @@ footer { background: var(--plum-deep); color: var(--on-plum-muted); border-top: 
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal-ready [data-reveal], .reveal-ready .values .val { opacity: 1 !important; transform: none !important; }
+  .reveal-ready [data-reveal], .reveal-ready .values .val, .reveal-ready .helps li { opacity: 1 !important; transform: none !important; }
   .val::before { transform: scaleX(.35); }
 }
 
