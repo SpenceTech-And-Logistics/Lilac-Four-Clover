@@ -72,12 +72,13 @@ export const team = {
 }
 
 export const contact = {
-  title: 'Visit or write to us',
-  intro: 'Ready to register a business or get your compliance in order? Reach us at our Nairobi office.',
+  title: 'Call, visit or write to us',
+  intro: 'Ready to register a business or get your compliance in order? Call us or visit our Nairobi office.',
   address: '330 Diani Road, Kilimani, Nairobi',
   postal: 'P.O. Box 7183–00200, Nairobi, Kenya',
   email: '',
-  phone: '', // e.g. '+254 700 000 000'
+  phone: '0722 860 108',
+  phoneLink: '+254722860108', // international format used for the tap-to-call link
   whatsapp: '', // digits only, e.g. '254700000000'
   linkedin: '',
 }

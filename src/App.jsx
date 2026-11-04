@@ -272,7 +272,7 @@ function Contact() {
     { label: 'Office', value: contact.address },
     { label: 'Postal address', value: contact.postal },
     contact.email && { label: 'Email', value: contact.email, href: `mailto:${contact.email}` },
-    contact.phone && { label: 'Phone', value: contact.phone, href: `tel:${contact.phone.replace(/\s/g, '')}` },
+    contact.phone && { label: 'Phone', value: contact.phone, href: `tel:${contact.phoneLink || contact.phone.replace(/\s/g, '')}` },
     contact.whatsapp && { label: 'WhatsApp', value: 'Chat with us', href: `https://wa.me/${contact.whatsapp}` },
     contact.linkedin && { label: 'LinkedIn', value: 'Follow us', href: contact.linkedin },
   ].filter(Boolean)
