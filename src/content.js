@@ -17,7 +17,7 @@ export const nav = [
 ]
 
 export const hero = {
-  eyebrow: 'Kenyan business consultancy',
+  eyebrow: 'Business consultancy · Nairobi, Kenya',
   titleStart: 'Business registration and compliance in Kenya, made ',
   titleEmphasis: 'straightforward',
   lede: 'We help local and international entrepreneurs, investors and companies establish and maintain legally compliant business operations in Kenya.',

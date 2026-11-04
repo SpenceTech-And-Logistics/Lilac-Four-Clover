@@ -17,6 +17,13 @@ Colours are defined at the top of `src/styles.css`. Plum `#5B3171` and grey `#5B
 
 Live at https://lilacfourclover.com (and www). `wrangler.jsonc` attaches both as Custom Domains on deploy; the domain must be an active zone in the same Cloudflare account.
 
+## SEO
+
+- The build pre-renders the page into `dist/index.html` (`scripts/prerender.mjs`), so search engines and link previews see the full text.
+- Title, description, Open Graph/Twitter tags and structured data (business, services, website) are in `index.html`.
+- `public/robots.txt`, `public/sitemap.xml`, `public/site.webmanifest`, share image `public/og-image.png` and icons.
+- To regenerate the share image and icons: `node scripts/make-images.cjs` (needs Playwright).
+
 ## Commands
 
 ```bash
