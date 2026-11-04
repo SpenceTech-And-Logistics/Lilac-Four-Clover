@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { site, nav, hero, about, services, approach, leader, contact, footer } from './content.js'
 
 const LEAF =
@@ -55,13 +55,46 @@ function Icon({ name }) {
   )
 }
 
+// Adds .in to [data-reveal] elements as they scroll into view.
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('[data-reveal]')
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce || !('IntersectionObserver' in window)) {
+      els.forEach((el) => el.classList.add('in'))
+      return
+    }
+    document.documentElement.classList.add('reveal-ready')
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in')
+            io.unobserve(e.target)
+          }
+        })
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+}
+
 function Header() {
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   return (
-    <header className="top">
+    <header className={`top${scrolled ? ' scrolled' : ''}`}>
       <div className="wrap top-row">
         <a className="brand" href="#home" aria-label={`${site.name}, home`} onClick={() => setOpen(false)}>
-          <Clover size={38} color="#C9A6DD" />
+          <Clover size={38} color="#C9A6DD" className="brand-mark" />
           <span>
             <b>{site.shortName}</b>
             <small>{site.tagline}</small>
@@ -91,32 +124,42 @@ function Hero() {
     <section className="hero">
       <div className="wrap hero-grid">
         <div>
-          <p className="eyebrow">{hero.eyebrow}</p>
-          <h1>
+          <p className="eyebrow rise" style={{ '--d': '0ms' }}>{hero.eyebrow}</p>
+          <h1 className="rise" style={{ '--d': '120ms' }}>
             {hero.titleStart}
             <em>{hero.titleEmphasis}</em>.
           </h1>
-          <p className="lede">{hero.lede}</p>
-          <div className="ctas">
+          <p className="lede rise" style={{ '--d': '260ms' }}>{hero.lede}</p>
+          <div className="ctas rise" style={{ '--d': '380ms' }}>
             <a className="btn btn-light" href="#services">Our services</a>
             <a className="btn btn-ghost" href="#contact">Talk to us</a>
           </div>
           <div className="strap">
-            {site.strap.map((s) => (
-              <span key={s}>{s}</span>
+            {site.strap.map((s, i) => (
+              <span key={s} className="rise" style={{ '--d': `${520 + i * 110}ms` }}>{s}</span>
             ))}
           </div>
         </div>
         <div className="hero-mark" aria-hidden="true">
           <svg viewBox="0 0 320 320">
-            <circle cx="160" cy="160" r="150" fill="none" stroke="#C9A6DD" strokeOpacity=".25" />
-            <circle cx="160" cy="160" r="118" fill="none" stroke="#C9A6DD" strokeOpacity=".18" />
-            <g transform="translate(160 160) scale(2.75)" fill="#C9A6DD">
-              {[0, 90, 180, 270].map((r) => (
-                <path key={r} d={LEAF} transform={`rotate(${r})`} />
-              ))}
+            <g className="orbit">
+              <circle cx="160" cy="160" r="150" fill="none" stroke="#C9A6DD" strokeOpacity=".3" strokeDasharray="2 10" strokeLinecap="round" />
+              <circle cx="160" cy="10" r="4" fill="#9BE0B4" />
             </g>
-            <circle cx="160" cy="160" r="7" fill="#9BE0B4" />
+            <g className="orbit orbit-rev">
+              <circle cx="160" cy="160" r="118" fill="none" stroke="#C9A6DD" strokeOpacity=".2" />
+              <circle cx="278" cy="160" r="3" fill="#E3CDF0" />
+            </g>
+            <g transform="translate(160 160) scale(2.75)" fill="#C9A6DD">
+              <g className="clover-spin">
+                {[0, 90, 180, 270].map((r, i) => (
+                  <g key={r} transform={`rotate(${r})`}>
+                    <path className="leaf" style={{ '--i': i }} d={LEAF} />
+                  </g>
+                ))}
+              </g>
+            </g>
+            <circle className="pulse" cx="160" cy="160" r="7" fill="#9BE0B4" />
           </svg>
         </div>
       </div>
@@ -128,14 +171,14 @@ function About() {
   return (
     <section id="about">
       <div className="wrap about-grid">
-        <div className="stack">
+        <div className="stack" data-reveal>
           <p className="eyebrow">About us</p>
           <h2>{about.title}</h2>
           {about.paragraphs.map((p) => (
             <p key={p} className="muted">{p}</p>
           ))}
         </div>
-        <aside className="who">
+        <aside className="who" data-reveal style={{ '--i': 2 }}>
           <h3>{about.whoTitle}</h3>
           <ul>
             {about.who.map((w) => (
@@ -155,14 +198,14 @@ function Services() {
   return (
     <section id="services" className="tint">
       <div className="wrap">
-        <div className="head">
+        <div className="head" data-reveal>
           <p className="eyebrow">Services</p>
           <h2>{services.title}</h2>
           <p>{services.intro}</p>
         </div>
         <div className="services">
-          {services.items.map((s) => (
-            <article className="svc" key={s.title}>
+          {services.items.map((s, i) => (
+            <article className="svc" key={s.title} data-reveal style={{ '--i': i }}>
               <div className="ic"><Icon name={s.icon} /></div>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
@@ -178,19 +221,19 @@ function Approach() {
   return (
     <section id="approach">
       <div className="wrap">
-        <div className="head">
+        <div className="head" data-reveal>
           <p className="eyebrow">Our approach</p>
           <h2>{approach.title}</h2>
         </div>
-        <div className="values">
-          {approach.values.map((v) => (
-            <div className="val" key={v.title}>
+        <div className="values" data-reveal>
+          {approach.values.map((v, i) => (
+            <div className="val" key={v.title} style={{ '--i': i }}>
               <h3>{v.title}</h3>
               <p>{v.text}</p>
             </div>
           ))}
         </div>
-        <p className="closing">{approach.closing}</p>
+        <p className="closing" data-reveal>{approach.closing}</p>
       </div>
     </section>
   )
@@ -200,11 +243,11 @@ function Leadership() {
   return (
     <section id="leadership" className="tint">
       <div className="wrap">
-        <div className="head">
+        <div className="head" data-reveal>
           <p className="eyebrow">Leadership</p>
           <h2>{leader.title}</h2>
         </div>
-        <div className="leader">
+        <div className="leader" data-reveal>
           {leader.photo ? (
             <img className="avatar" src={leader.photo} alt={leader.name} />
           ) : (
@@ -234,14 +277,14 @@ function Contact() {
   return (
     <section id="contact" className="contact">
       <div className="wrap">
-        <div className="head">
+        <div className="head" data-reveal>
           <p className="eyebrow">Contact</p>
           <h2>{contact.title}</h2>
           <p>{contact.intro}</p>
         </div>
         <div className="contact-grid">
-          {items.map((c) => (
-            <div className="c-item" key={c.label}>
+          {items.map((c, i) => (
+            <div className="c-item" key={c.label} data-reveal style={{ '--i': i }}>
               <span className="eyebrow">{c.label}</span>
               {c.href ? (
                 <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">{c.value}</a>
@@ -257,6 +300,7 @@ function Contact() {
 }
 
 export default function App() {
+  useReveal()
   return (
     <>
       <Header />
