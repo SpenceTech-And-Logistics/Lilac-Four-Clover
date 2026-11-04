@@ -13,6 +13,10 @@ All text is in `src/content.js`. Fields left blank (`''`) are hidden on the site
 
 Colours are defined at the top of `src/styles.css`. Plum `#5B3171` and grey `#5B5F67` come from the company letterhead.
 
+## Domain
+
+Live at https://lilacfourclover.com (and www). `wrangler.jsonc` attaches both as Custom Domains on deploy; the domain must be an active zone in the same Cloudflare account.
+
 ## Commands
 
 ```bash
